@@ -1,2 +1,2 @@
 # landx-ai
-Frontend repo for landx
+This is currently the mvp version of landx
