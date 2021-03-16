@@ -1,8 +1,8 @@
 html,
 body,
 #map-canvas {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
 }
@@ -21,6 +21,13 @@ body,
   display: none;
   width: 90px;
 }
-button.layer_button {
-  width: 100px;
+
+.layer_button {
+  min-width: 90px;
+}
+
+.map_container {
+  width: 80vw;
+  height: 80vh;
+  padding-top: 24px;
 }

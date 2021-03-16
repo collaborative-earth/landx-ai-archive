@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from 'react';
 import {Loader, LoaderOptions} from '@googlemaps/js-api-loader';
 import './App.css';
+import './App.sass';
 
 const layers = [
   {
@@ -37,19 +38,23 @@ const layers = [
 
 function App() {
   const [mapInstance, setMapInstance] = useState<Loader>();
+  const [config, setConfig] = useState<{GOOGLE_API_KEY: string}>();
   const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const options: LoaderOptions = {
-      apiKey: process.env['REACT_APP_GOOGLE_API_KEY'] as string,
-    };
-    const loader = new Loader(options);
-    setMapInstance(loader);
-  }, []);
+    if (!config) {
+      fetch('/config.json').then((resp) => resp.json().then(setConfig));
+    } else {
+      const options: LoaderOptions = {
+        apiKey: process.env['REACT_APP_GOOGLE_API_KEY'] as string,
+      };
+      const loader = new Loader(options);
+      setMapInstance(loader);
+    }
+  }, [config]);
 
   useEffect(() => {
     if (mapInstance) {
-      console.log('hi');
       mapInstance.load().then(() => {
         if (mapRef.current !== null) {
           var minZoom = 0.0;
@@ -125,13 +130,22 @@ function App() {
   }, [mapInstance]);
 
   return (
-    <>
-      <div className="layer_control" id="example_layer_control">
-        <button className="layer_button custom-map-control-button" />
-        <input type="range" min="1" max="100" value="100" className="slider" />
+    <div>
+      <div className="map_container container">
+        <div className="title has-text-centered">Welcome to LandX AI</div>
+        <div className="layer_control container" id="example_layer_control">
+          <button className="layer_button button" />
+          <input
+            type="range"
+            min="1"
+            max="100"
+            value="100"
+            className="slider"
+          />
+        </div>
+        <div id="map-canvas" ref={mapRef} className="card"></div>
       </div>
-      <div id="map-canvas" ref={mapRef}></div>
-    </>
+    </div>
   );
 }
 
