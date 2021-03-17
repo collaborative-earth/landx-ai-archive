@@ -1,124 +1,150 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>EarthShot Viewer</title>
-  <style type="text/css">
-    html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
-    .activated button {
-            box-shadow: 0 2px gray;
-            transform: translateY(1px);
-    }
-    #example_layer_control {
-            display: none;
-    }
-    .layer_control.activated:hover .slider {
-       display: block;
-    }
-    
-    .slider {
-       display: none;
-       width: 90px;
-    }
-    button.layer_button {
-       width: 100px;
-    }
-  </style>
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAVep4VB6dHIGNfOsXwqAKq0LmsRkoHyeI"></script>
-  <script type="text/javascript">
-
-    var minZoom =  0.0 ;
-    var maxZoom =  13.0 ;
-    layers = [
-      {
-          tilePrefix:
-            "https:\/\/storage.googleapis.com\/nico-earthshot-test\/playground-map-cloud-experiment-county-borders\/",
-          tileSuffix: "",
-          name: "County Borders",
-      },
-      {
-        tilePrefix : 'https:\/\/storage.googleapis.com\/gee-export-bucket\/riley-agb-parcel-data-2021\/',
-        tileSuffix : '',
-        name: 'AGB 2021'
-      },
-      {
-        tilePrefix : 'https:\/\/storage.googleapis.com\/gee-export-bucket\/riley-agb-parcel-data-2031\/',
-        tileSuffix : '',
-        name: 'AGB 2031'
-      },
-      {
-        tilePrefix : 'https:\/\/storage.googleapis.com\/gee-export-bucket/riley-agb-parcel-data-2051\/',
-        tileSuffix : '',
-        name: 'AGB 2051'
-      },
-      {
-        tilePrefix : 'https:\/\/storage.googleapis.com\/saurya-earthshot-test\/playground-map-cloud-experiment\/',
-        tileSuffix : '',
-        name: 'Hudak'
+  <head>
+    <title>EarthShot Viewer</title>
+    <style type="text/css">
+      html,
+      body,
+      #map-canvas {
+        height: 100%;
+        margin: 0;
+        padding: 0;
       }
-    ];
-    var latLngBounds = new google.maps.LatLngBounds(
-        new google.maps.LatLng( 42.87999999999998 ,  -124.1 ),
-        new google.maps.LatLng( 43.38006806800515 ,  -123.6 ));
+      .activated button {
+        box-shadow: 0 2px gray;
+        transform: translateY(1px);
+      }
+      #example_layer_control {
+        display: none;
+      }
+      .layer_control.activated:hover .slider {
+        display: block;
+      }
 
-    function initialize() {
-      var mapOptions = {
+      .slider {
+        display: none;
+        width: 90px;
+      }
+      button.layer_button {
+        width: 100px;
+      }
+    </style>
+    <script
+      type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAVep4VB6dHIGNfOsXwqAKq0LmsRkoHyeI"
+    ></script>
+    <script type="text/javascript">
+      var minZoom = 0.0;
+      var maxZoom = 13.0;
+      layers = [
+        {
+          tilePrefix:
+            'https:\/\/storage.googleapis.com\/nico-earthshot-test\/playground-map-cloud-experiment-county-borders\/',
+          tileSuffix: '',
+          name: 'County Borders',
+        },
+        {
+          tilePrefix:
+            'https:\/\/storage.googleapis.com\/gee-export-bucket\/riley-agb-parcel-data-2021\/',
+          tileSuffix: '',
+          name: 'AGB 2021',
+        },
+        {
+          tilePrefix:
+            'https:\/\/storage.googleapis.com\/gee-export-bucket\/riley-agb-parcel-data-2031\/',
+          tileSuffix: '',
+          name: 'AGB 2031',
+        },
+        {
+          tilePrefix:
+            'https:\/\/storage.googleapis.com\/gee-export-bucket/riley-agb-parcel-data-2051\/',
+          tileSuffix: '',
+          name: 'AGB 2051',
+        },
+        {
+          tilePrefix:
+            'https:\/\/storage.googleapis.com\/saurya-earthshot-test\/playground-map-cloud-experiment\/',
+          tileSuffix: '',
+          name: 'Hudak',
+        },
+      ];
+      var latLngBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(42.87999999999998, -124.1),
+        new google.maps.LatLng(43.38006806800515, -123.6),
+      );
+
+      function initialize() {
+        var mapOptions = {
           mapTypeControl: false,
           streetViewControl: false,
           fullscreenControl: false,
           minZoom: minZoom,
           maxZoom: maxZoom,
-      };
-      var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-      map.fitBounds(latLngBounds);
-      layers.forEach(function(layer) {
-      var overlayMapType = new google.maps.ImageMapType({
-        getTileUrl: function(coord, zoom) {
-          if (zoom < minZoom || zoom > maxZoom) {
-            return null;
-          }
-          var numTiles = 1 << zoom;
-          var x = ((coord.x % numTiles) + numTiles) % numTiles;
-          return [layer.tilePrefix, zoom, '/', x, '/', coord.y, layer.tileSuffix].join('');
-        },
-        tileSize: new google.maps.Size(256, 256),
-      });
-      const exampleButton = document.querySelector("#example_layer_control");
-      const layerControl = exampleButton.cloneNode(true);
-      layerControl.id = layer.name + "_control";
-      const toggleButton = layerControl.querySelector("button");
-      toggleButton.textContent = layer.name;
-      layerControl.classList.add("activated");
-      toggleButton.addEventListener("click", () => {
-        if (layerControl.classList.contains("activated")) {
-          overlayMapType.setOpacity(0);
-          layerSlider.value = 0;
-          layerControl.classList.remove("activated");
-        } else {
-          overlayMapType.setOpacity(1.0);
-          layerSlider.value = 100;
-          layerControl.classList.add("activated");
-        }
-      });
+        };
+        var map = new google.maps.Map(
+          document.getElementById('map-canvas'),
+          mapOptions,
+        );
+        map.fitBounds(latLngBounds);
+        layers.forEach(function (layer) {
+          var overlayMapType = new google.maps.ImageMapType({
+            getTileUrl: function (coord, zoom) {
+              if (zoom < minZoom || zoom > maxZoom) {
+                return null;
+              }
+              var numTiles = 1 << zoom;
+              var x = ((coord.x % numTiles) + numTiles) % numTiles;
+              return [
+                layer.tilePrefix,
+                zoom,
+                '/',
+                x,
+                '/',
+                coord.y,
+                layer.tileSuffix,
+              ].join('');
+            },
+            tileSize: new google.maps.Size(256, 256),
+          });
+          const exampleButton = document.querySelector(
+            '#example_layer_control',
+          );
+          const layerControl = exampleButton.cloneNode(true);
+          layerControl.id = layer.name + '_control';
+          const toggleButton = layerControl.querySelector('button');
+          toggleButton.textContent = layer.name;
+          layerControl.classList.add('activated');
+          toggleButton.addEventListener('click', () => {
+            if (layerControl.classList.contains('activated')) {
+              overlayMapType.setOpacity(0);
+              layerSlider.value = 0;
+              layerControl.classList.remove('activated');
+            } else {
+              overlayMapType.setOpacity(1.0);
+              layerSlider.value = 100;
+              layerControl.classList.add('activated');
+            }
+          });
 
-      const layerSlider = layerControl.querySelector("input.slider");
-      layerSlider.addEventListener("input", () => {
-        overlayMapType.setOpacity(layerSlider.value/100);
-      });
-      map.controls[google.maps.ControlPosition.TOP_RIGHT].push(layerControl);
-      map.overlayMapTypes.push(overlayMapType);
-      });
-    }
+          const layerSlider = layerControl.querySelector('input.slider');
+          layerSlider.addEventListener('input', () => {
+            overlayMapType.setOpacity(layerSlider.value / 100);
+          });
+          map.controls[google.maps.ControlPosition.TOP_RIGHT].push(
+            layerControl,
+          );
+          map.overlayMapTypes.push(overlayMapType);
+        });
+      }
 
-    google.maps.event.addDomListener(window, 'load', initialize);
-
-  </script>
-</head>
-<body>
-  <div class="layer_control" id="example_layer_control">
-    <button class="layer_button custom-map-control-button">
-    </button>
-    <input type="range" min="1" max="100" value="100" class="slider">
-  </div>
-  <div id="map-canvas"></div>
-</body>
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+  </head>
+  <body>
+    <div class="layer_control" id="example_layer_control">
+      <button class="layer_button custom-map-control-button"></button>
+      <input type="range" min="1" max="100" value="100" class="slider" />
+    </div>
+    <div id="map-canvas"></div>
+  </body>
 </html>
