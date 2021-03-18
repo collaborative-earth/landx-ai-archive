@@ -20,6 +20,6 @@ whatever environment we want to deploy.
 After changing to the appropriate npm version, install all the dependencies using `yarn install`. To run the application in development mode, use `yarn start`.
 NOTE: **Do Not** use npm commands.
 
-## Temporary
+## Deploy
 
-`index.html` is maintained independent of the react app until we can transition all work and github pages to react.
+To deploy this application, run `yarn deploy`. In the future, this will be automated with release branches, but this is the current soulution.
