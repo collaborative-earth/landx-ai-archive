@@ -43,10 +43,12 @@ function App() {
 
   useEffect(() => {
     if (!config) {
-      fetch('/config.json').then((resp) => resp.json().then(setConfig));
-    } else {
+      fetch(`${process.env.PUBLIC_URL}/config.json`).then((resp) =>
+        resp.json().then(setConfig),
+      );
+    } else if (config) {
       const options: LoaderOptions = {
-        apiKey: process.env['REACT_APP_GOOGLE_API_KEY'] as string,
+        apiKey: config.GOOGLE_API_KEY,
       };
       const loader = new Loader(options);
       setMapInstance(loader);
