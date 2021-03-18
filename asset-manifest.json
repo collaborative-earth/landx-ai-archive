@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/landx-ai/static/css/main.c76d76c5.chunk.css",
-    "main.js": "/landx-ai/static/js/main.ec173dbb.chunk.js",
-    "main.js.map": "/landx-ai/static/js/main.ec173dbb.chunk.js.map",
+    "main.js": "/landx-ai/static/js/main.ab5ad721.chunk.js",
+    "main.js.map": "/landx-ai/static/js/main.ab5ad721.chunk.js.map",
     "runtime-main.js": "/landx-ai/static/js/runtime-main.c37174c0.js",
     "runtime-main.js.map": "/landx-ai/static/js/runtime-main.c37174c0.js.map",
     "static/js/2.4cd0054f.chunk.js": "/landx-ai/static/js/2.4cd0054f.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.c37174c0.js",
     "static/js/2.4cd0054f.chunk.js",
     "static/css/main.c76d76c5.chunk.css",
-    "static/js/main.ec173dbb.chunk.js"
+    "static/js/main.ab5ad721.chunk.js"
   ]
 }
