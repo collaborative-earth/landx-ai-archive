@@ -6,6 +6,12 @@ import './App.sass';
 const layers = [
   {
     tilePrefix:
+      'https://storage.googleapis.com/nico-earthshot-test/playground-map-cloud-experiment-county-parcels/',
+    tileSuffix: '',
+    name: 'Parcels',
+  },
+  {
+    tilePrefix:
       'https://storage.googleapis.com/nico-earthshot-test/playground-map-cloud-experiment-county-borders/',
     tileSuffix: '',
     name: 'County Borders',
